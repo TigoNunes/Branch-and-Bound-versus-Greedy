@@ -1,4 +1,5 @@
 import copy
+import itertools
 
 def conta_penalidade(tempo, prazo, penalidade, hoje):
     """Faz a conta da penalidade em relação ao dia atual"""
@@ -38,10 +39,46 @@ def Greedy(trabalhos):
             
     print(f"ordem de execução: {ordem}")
     print(f"Penalidade máxima: {penalidades}")
-    
+
+
+def calcula_penalidade(sequencia, jobs):
+    tempo_total = 0  # Inicializa o tempo total como 0
+    penalidade_total = 0  # Inicializa a penalidade total como 0
+
+    for indice in sequencia:
+        # Adiciona o tempo do job ao tempo total
+        tempo_total += jobs[indice][0]
+        # Calcula a penalidade acumulada para o job atual e adiciona à penalidade total
+        penalidade_total += max(0, tempo_total - jobs[indice][1]) * jobs[indice][2]
+
+    return penalidade_total  # Retorna a penalidade total para a sequência dada
+
+def branch_and_bound(jobs):
+    n = len(jobs)  # Obtém o número de jobs
+    melhor_sequencia = None  # Inicializa a melhor sequência como None
+    melhor_penalidade = float('inf')  # Inicializa a melhor penalidade como infinito positivo
+
+    for sequencia in itertools.permutations(range(n)):
+        # Para cada permutação possível dos índices dos jobs
+        penalidade_atual = calcula_penalidade(sequencia, jobs)
+        # Calcula a penalidade para a sequência atual usando a função definida acima
+
+        if penalidade_atual < melhor_penalidade:
+            # Se a penalidade atual for menor que a melhor penalidade conhecida
+            melhor_sequencia = sequencia
+            # Atualiza a melhor sequência
+            melhor_penalidade = penalidade_atual
+            # Atualiza a melhor penalidade conhecida
+
+    return melhor_sequencia, melhor_penalidade
 
 trabalhos = [[1, 2, 5], [2, 5, 2], [3, 1, 8], [4, 3, 4]]
 # (tempo que gasta, prazo, penalidade)
 
 Greedy(trabalhos)
+melhor_sequencia, melhor_penalidade = branch_and_bound(trabalhos)
+melhor_sequencia_incrementada = tuple(i + 1 for i in melhor_sequencia)
 
+print("Melhor sequência:", melhor_sequencia_incrementada)
+print("Melhor penalidade:", melhor_penalidade)
+    
