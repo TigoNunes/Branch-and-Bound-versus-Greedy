@@ -15,10 +15,7 @@ def Greedy(trabalhos):
 
     ordem = [0] * len(trabalhos) # Instancia a ordem 
     trabalhos_copia = copy.deepcopy(trabalhos) # copia a lista trabalhos para poder ser alterada no lugar da original 
-    # ordem[0] = 1 # o primeiro trabalho que tem que ser executado é o primeiro da lista
-    dia_atual = 1 # instancia o dia
-    # dia_atual += trabalhos[0][0] # soma o dia atual com o tempo que leva pro primeiro trabalho ficar pronto e podermos começar o próximo
-    # penalidades = (max(0, trabalhos[0][0] - trabalhos[0][1]) * trabalhos[0][2]) # instancia as penalidades com a penalidade de atraso do primeiro trabalho  
+    dia_atual = 1 # instancia o dia  
     penalidades = 0 # instancia as penalidades 
 
     for i in range(0, len(trabalhos)):
